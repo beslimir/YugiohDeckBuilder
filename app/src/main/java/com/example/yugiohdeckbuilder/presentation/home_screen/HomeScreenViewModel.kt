@@ -39,10 +39,14 @@ class HomeScreenViewModel @Inject constructor(
         if (command == "right") {
             if (currentCardShown.value < 3) {
                 currentCardShown.value += 1
+            } else {
+                currentCardShown.value = 1
             }
         } else {
             if (currentCardShown.value > 1) {
                 currentCardShown.value -= 1
+            } else {
+                currentCardShown.value = 3
             }
         }
     }

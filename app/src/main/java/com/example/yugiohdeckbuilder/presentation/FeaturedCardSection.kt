@@ -47,24 +47,15 @@ fun FeaturedCardSection(
                 val defaultUrl = "https://storage.googleapis.com/ygoprodeck.com/pics/77585513.jpg"
                 val rightCard = "https://storage.googleapis.com/ygoprodeck.com/pics/70781052.jpg"
                 val leftCard = "https://storage.googleapis.com/ygoprodeck.com/pics/40640057.jpg"
-                var url by remember {
-                    mutableStateOf(defaultUrl)
-                }
 
-                loadPictureWithGlide(url = rightCard)
-                loadPictureWithGlide(url = leftCard)
-                val image = loadPictureWithGlide(url = url).value
+                val imageDefault = loadPictureWithGlide(url = defaultUrl).value
+                val imageLeft = loadPictureWithGlide(url = leftCard).value
+                val imageRight = loadPictureWithGlide(url = rightCard).value
 
                 Column(
                     modifier = modifier
                         .clickable {
                             viewModel.getCurrentShownCard("left")
-
-                            url = if (currentCard == 2) {
-                                defaultUrl
-                            } else {
-                                leftCard
-                            }
                         },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -75,37 +66,62 @@ fun FeaturedCardSection(
                     )
                 }
 
-                Column(
+                Box(
                     modifier = Modifier
                         .size(200.dp)
                         .weight(2f)
                 ) {
-                    image?.let { img ->
-                        Image(
-                            bitmap = img.asImageBitmap(),
-                            contentDescription = "Jinzo",
-                            modifier = Modifier
-                                .size(200.dp)
-                                .clickable {
-                                    Toast
-                                        .makeText(context, "${featuredList.size}", Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-                        )
+                    if (currentCard == 1) {
+                        imageLeft?.let { img ->
+                            Image(
+                                bitmap = img.asImageBitmap(),
+                                contentDescription = "Kuriboh",
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clickable {
+                                        Toast
+                                            .makeText(context, "Kuriboh", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                            )
+                        }
                     }
-
+                    else if (currentCard == 2) {
+                        imageDefault?.let { img ->
+                            Image(
+                                bitmap = img.asImageBitmap(),
+                                contentDescription = "Jinzo",
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clickable {
+                                        Toast
+                                            .makeText(context, "Jinzo", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                            )
+                        }
+                    }
+                    else if (currentCard == 3) {
+                        imageRight?.let { img ->
+                            Image(
+                                bitmap = img.asImageBitmap(),
+                                contentDescription = "Summoned Skull",
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clickable {
+                                        Toast
+                                            .makeText(context, "Summoned Skull", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                            )
+                        }
+                    }
                 }
 
                 Column(
                     modifier = modifier
                         .clickable {
                             viewModel.getCurrentShownCard("right")
-
-                            url = if (currentCard == 2) {
-                                defaultUrl
-                            } else {
-                                rightCard
-                            }
                         },
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
