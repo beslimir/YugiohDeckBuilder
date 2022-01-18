@@ -6,10 +6,12 @@ import com.example.yugiohdeckbuilder.data.repository.YugiohRepositoryImpl
 import com.example.yugiohdeckbuilder.domain.error_handler.ErrorHandler
 import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Constants.BASE_URL
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -20,10 +22,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideYugiohAPI(): YugiohAPI {
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(StethoInterceptor())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideYugiohAPI(client: OkHttpClient): YugiohAPI {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
+            .client(client)
             .build()
             .create(YugiohAPI::class.java)
     }
