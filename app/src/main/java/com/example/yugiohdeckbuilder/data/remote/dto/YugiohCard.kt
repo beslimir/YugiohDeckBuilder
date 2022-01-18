@@ -3,7 +3,7 @@ package com.example.yugiohdeckbuilder.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class YugiohCard(
     val archetype: String,
     val atk: Int,
     val attribute: String,
