@@ -3,19 +3,23 @@ package com.example.yugiohdeckbuilder.presentation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -23,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
+import com.example.yugiohdeckbuilder.presentation.home_screen.YugiohCardRow
 
 @Composable
 fun FeaturedCardSection(
@@ -37,17 +42,14 @@ fun FeaturedCardSection(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
     ) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-//                val defaultUrl = "https://storage.googleapis.com/ygoprodeck.com/pics/77585513.jpg"
-//                val rightCard = "https://storage.googleapis.com/ygoprodeck.com/pics/70781052.jpg"
-//                val leftCard = "https://storage.googleapis.com/ygoprodeck.com/pics/40640057.jpg"
-                if (featuredList.isNotEmpty()) {
+        if (featuredList.isNotEmpty()) {
+            Column {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.height(300.dp)
+                ) {
                     val defaultUrl = featuredList[1].cardImages!![0].imageUrl
                     val rightCard = featuredList[2].cardImages!![0].imageUrl
                     val leftCard = featuredList[0].cardImages!![0].imageUrl
@@ -83,9 +85,7 @@ fun FeaturedCardSection(
                                     modifier = Modifier
                                         .size(200.dp)
                                         .clickable {
-                                            Toast
-                                                .makeText(context, "Kuriboh", Toast.LENGTH_SHORT)
-                                                .show()
+
                                         }
                                 )
                             }
@@ -97,9 +97,7 @@ fun FeaturedCardSection(
                                     modifier = Modifier
                                         .size(200.dp)
                                         .clickable {
-                                            Toast
-                                                .makeText(context, "Jinzo", Toast.LENGTH_SHORT)
-                                                .show()
+
                                         }
                                 )
                             }
@@ -111,11 +109,7 @@ fun FeaturedCardSection(
                                     modifier = Modifier
                                         .size(200.dp)
                                         .clickable {
-                                            Toast
-                                                .makeText(context,
-                                                    "Summoned Skull",
-                                                    Toast.LENGTH_SHORT)
-                                                .show()
+
                                         }
                                 )
                             }
@@ -136,7 +130,18 @@ fun FeaturedCardSection(
                         )
                     }
                 }
-
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+                        items(featuredList.size) {
+                            YugiohCardRow(featuredList)
+                        }
+                    }
+                }
             }
         }
     }
