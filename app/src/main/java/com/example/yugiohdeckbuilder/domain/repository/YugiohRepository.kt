@@ -8,5 +8,5 @@ interface YugiohRepository {
 
     suspend fun getYugiohList(num: Int, offset: Int): Resource<YugiohList>
 
-    suspend fun getYugiohCardByName(name: String): Resource<YugiohCard>
+    suspend fun getYugiohCardByName(name: String): Resource<YugiohList>
 }

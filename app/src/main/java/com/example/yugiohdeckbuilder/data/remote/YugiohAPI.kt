@@ -16,6 +16,6 @@ interface YugiohAPI {
     @GET("cardinfo.php")
     suspend fun getYugiohCardByName(
         @Query("name") cardName: String
-    ): YugiohCard
+    ): YugiohList
 
 }
