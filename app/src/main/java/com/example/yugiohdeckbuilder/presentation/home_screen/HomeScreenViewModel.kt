@@ -1,10 +1,12 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohList
+import com.example.yugiohdeckbuilder.domain.error_handler.ErrorEntity
 import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,20 +21,52 @@ class HomeScreenViewModel @Inject constructor(
 
     var featuredList = mutableStateOf<List<YugiohCard>>(listOf())
     var currentCardShown = mutableStateOf(2)
-
-
+    var isLoading = mutableStateOf(false)
+    var loadError = mutableStateOf(null)
 
     init {
-        getFeaturedCards("Water")
+        getYugiohList(20, 0)
     }
-
 
     suspend fun getYugiohCardByName(): Resource<YugiohList> {
-        return repository.getYugiohCardByName("Jinzoo")
+        return repository.getYugiohCardByName("Jinzo")
     }
 
-    suspend fun getYugiohList(): Resource<YugiohList> {
-        return repository.getYugiohList(num = 5, offset = 0)
+    fun getYugiohList(num: Int, offset: Int) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val result = repository.getYugiohList(num, offset)
+
+            when (result) {
+                is Resource.Success -> {
+                    val yugiohCards = result.apiData?.data!!.map {
+                        YugiohCard(
+                            archetype = it.archetype,
+                            atk = it.atk,
+                            attribute = it.attribute,
+                            cardImages = it.cardImages,
+                            cardPrices = it.cardPrices,
+                            cardSets = it.cardSets,
+                            def = it.def,
+                            desc = it.desc,
+                            id = it.id,
+                            level = it.level,
+                            name = it.name,
+                            race = it.race,
+                            type = it.type
+                        )
+                    }
+
+                    isLoading.value = false
+                    loadError.value = null
+                    featuredList.value += yugiohCards
+                }
+                is Resource.Error -> {
+                    //TODO: Fix this
+                    loadError.value = null
+                }
+            }
+        }
     }
 
     fun getCurrentShownCard(command: String) {
@@ -49,24 +83,6 @@ class HomeScreenViewModel @Inject constructor(
                 currentCardShown.value = 3
             }
         }
-    }
-
-    //TODO: Change later yugiohList fo attribute list
-    fun getFeaturedCards(attribute: String) {
-        viewModelScope.launch(Dispatchers.Default) {
-            val resultCardList = repository.getYugiohList(5, 0)
-            when (resultCardList) {
-                is Resource.Success -> {
-                    for (element in resultCardList.apiData?.data!!) {
-                        featuredList.value += element
-                    }
-                }
-                else -> {
-
-                }
-            }
-        }
-
     }
 
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,7 +30,6 @@ fun FeaturedCardSection(
     context: Context,
     viewModel: HomeScreenViewModel,
 ) {
-
     val currentCard by remember { viewModel.currentCardShown }
     val featuredList by remember { viewModel.featuredList }
 
@@ -44,92 +44,97 @@ fun FeaturedCardSection(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val defaultUrl = "https://storage.googleapis.com/ygoprodeck.com/pics/77585513.jpg"
-                val rightCard = "https://storage.googleapis.com/ygoprodeck.com/pics/70781052.jpg"
-                val leftCard = "https://storage.googleapis.com/ygoprodeck.com/pics/40640057.jpg"
+//                val defaultUrl = "https://storage.googleapis.com/ygoprodeck.com/pics/77585513.jpg"
+//                val rightCard = "https://storage.googleapis.com/ygoprodeck.com/pics/70781052.jpg"
+//                val leftCard = "https://storage.googleapis.com/ygoprodeck.com/pics/40640057.jpg"
+                if (featuredList.isNotEmpty()) {
+                    val defaultUrl = featuredList[1].cardImages!![0].imageUrl
+                    val rightCard = featuredList[2].cardImages!![0].imageUrl
+                    val leftCard = featuredList[0].cardImages!![0].imageUrl
 
-                val imageDefault = loadPictureWithGlide(url = defaultUrl).value
-                val imageLeft = loadPictureWithGlide(url = leftCard).value
-                val imageRight = loadPictureWithGlide(url = rightCard).value
+                    val imageDefault = loadPictureWithGlide(url = defaultUrl).value
+                    val imageLeft = loadPictureWithGlide(url = leftCard).value
+                    val imageRight = loadPictureWithGlide(url = rightCard).value
 
-                Column(
-                    modifier = modifier
-                        .clickable {
-                            viewModel.getCurrentShownCard("left")
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Arrow back",
-                    )
-                }
+                    Column(
+                        modifier = modifier
+                            .clickable {
+                                viewModel.getCurrentShownCard("left")
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Arrow back",
+                        )
+                    }
 
-                Box(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .weight(2f)
-                ) {
-                    if (currentCard == 1) {
-                        imageLeft?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = "Kuriboh",
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .clickable {
-                                        Toast
-                                            .makeText(context, "Kuriboh", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
-                            )
+                    Box(
+                        modifier = Modifier
+                            .size(200.dp)
+                            .weight(2f)
+                    ) {
+                        if (currentCard == 1) {
+                            imageLeft?.let { img ->
+                                Image(
+                                    bitmap = img.asImageBitmap(),
+                                    contentDescription = featuredList[1].name,
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .clickable {
+                                            Toast
+                                                .makeText(context, "Kuriboh", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                )
+                            }
+                        } else if (currentCard == 2) {
+                            imageDefault?.let { img ->
+                                Image(
+                                    bitmap = img.asImageBitmap(),
+                                    contentDescription = featuredList[0].name,
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .clickable {
+                                            Toast
+                                                .makeText(context, "Jinzo", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                )
+                            }
+                        } else if (currentCard == 3) {
+                            imageRight?.let { img ->
+                                Image(
+                                    bitmap = img.asImageBitmap(),
+                                    contentDescription = featuredList[2].name,
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .clickable {
+                                            Toast
+                                                .makeText(context,
+                                                    "Summoned Skull",
+                                                    Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                )
+                            }
                         }
                     }
-                    else if (currentCard == 2) {
-                        imageDefault?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = "Jinzo",
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .clickable {
-                                        Toast
-                                            .makeText(context, "Jinzo", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
-                            )
-                        }
-                    }
-                    else if (currentCard == 3) {
-                        imageRight?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = "Summoned Skull",
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .clickable {
-                                        Toast
-                                            .makeText(context, "Summoned Skull", Toast.LENGTH_SHORT)
-                                            .show()
-                                    }
-                            )
-                        }
-                    }
-                }
 
-                Column(
-                    modifier = modifier
-                        .clickable {
-                            viewModel.getCurrentShownCard("right")
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowForward,
-                        contentDescription = "Arrow forward",
-                    )
+                    Column(
+                        modifier = modifier
+                            .clickable {
+                                viewModel.getCurrentShownCard("right")
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "Arrow forward",
+                        )
+                    }
                 }
 
             }
