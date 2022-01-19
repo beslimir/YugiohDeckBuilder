@@ -8,7 +8,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
@@ -45,7 +47,7 @@ fun FeaturedCardSection(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.height(300.dp)
                 ) {
-                    val featuredImage = loadPictureWithGlide(url = featuredUrl).value
+                    val featuredImage = loadPictureWithGlide(url = featuredUrl, viewModel = viewModel).value
 
                     Column(
                         modifier = modifier
@@ -66,6 +68,12 @@ fun FeaturedCardSection(
                             .size(200.dp)
                             .weight(2f)
                     ) {
+                        if (viewModel.isFeaturedCardLoading.value) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colors.primary,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                         featuredImage?.let { img ->
                             Image(
                                 bitmap = img.asImageBitmap(),
@@ -120,6 +128,7 @@ fun FeaturedCardSection(
 @Composable
 fun loadPictureWithGlide(
     url: String,
+    viewModel: HomeScreenViewModel
 ): MutableState<Bitmap?> {
 
     val bitmapState: MutableState<Bitmap?> = mutableStateOf(null)
@@ -130,6 +139,7 @@ fun loadPictureWithGlide(
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 bitmapState.value = resource
+                viewModel.isFeaturedCardLoading.value = false
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {}

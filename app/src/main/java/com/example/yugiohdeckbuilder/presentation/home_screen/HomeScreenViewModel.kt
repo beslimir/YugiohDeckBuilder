@@ -22,6 +22,8 @@ class HomeScreenViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
     var loadError = mutableStateOf(null)
 
+    var isFeaturedCardLoading = mutableStateOf(true)
+
     init {
         getYugiohList(30, 0)
     }
@@ -69,6 +71,8 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun getCurrentShownCard(command: String) {
+        isFeaturedCardLoading.value = true
+
         if (command == "right") {
             if (currentCardShown.value == featuredList.value.size - 1) {
                 currentCardShown.value = 0
