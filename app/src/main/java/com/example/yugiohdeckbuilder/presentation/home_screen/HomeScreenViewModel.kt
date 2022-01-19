@@ -66,7 +66,9 @@ class HomeScreenViewModel @Inject constructor(
                     loadError.value = null
                 }
             }
-            featuredUrl.value = featuredList.value[0].cardImages!![0].imageUrl
+            if (featuredList.value.isNotEmpty()) {
+                featuredUrl.value = featuredList.value[0].cardImages!![0].imageUrl
+            }
         }
     }
 
