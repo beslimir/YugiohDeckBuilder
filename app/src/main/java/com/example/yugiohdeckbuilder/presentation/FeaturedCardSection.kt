@@ -138,7 +138,10 @@ fun FeaturedCardSection(
                 ) {
                     LazyColumn(contentPadding = PaddingValues(16.dp)) {
                         items(featuredList.size) {
-                            YugiohCardRow(featuredList)
+                            YugiohCardRow(
+                                entries = featuredList,
+                                index = it
+                            )
                         }
                     }
                 }
