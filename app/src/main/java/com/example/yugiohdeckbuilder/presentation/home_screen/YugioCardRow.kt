@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -69,6 +70,24 @@ fun YugiohCardRow(
                         fontWeight = FontWeight.SemiBold
                     )
                 )
+                if (entries[index].type.contains("Monster")) {
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text(
+                        text = "ATK: ${entries[index].atk}",
+                        style = TextStyle(
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "DEF: ${entries[index].def}",
+                        style = TextStyle(
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
             }
             Row(
                 modifier = Modifier
@@ -78,7 +97,9 @@ fun YugiohCardRow(
                     text = entries[index].desc,
                     style = TextStyle(
                         fontSize = 10.sp
-                    )
+                    ),
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
