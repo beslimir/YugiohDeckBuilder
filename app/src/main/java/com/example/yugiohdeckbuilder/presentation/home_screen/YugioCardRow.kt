@@ -1,6 +1,8 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen
 
+import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -17,12 +19,19 @@ import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 @Composable
 fun YugiohCardRow(
     entries: List<YugiohCard>,
-    index: Int
+    index: Int,
+    context: Context,
+    viewModel: HomeScreenViewModel,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 4.dp, bottom = 4.dp)
+            .clickable {
+                //Change the featured card
+                viewModel.featuredUrl.value = entries[index].cardImages!![0].imageUrl
+                viewModel.currentCardShown.value = index
+            }
     ) {
         val painter = rememberImagePainter(
             data = entries[index].cardImages!![0].imageUrlSmall

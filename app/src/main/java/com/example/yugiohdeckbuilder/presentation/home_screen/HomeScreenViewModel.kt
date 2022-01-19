@@ -1,31 +1,29 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohList
-import com.example.yugiohdeckbuilder.domain.error_handler.ErrorEntity
 import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val repository: YugiohRepository
-): ViewModel() {
+    private val repository: YugiohRepository,
+) : ViewModel() {
 
     var featuredList = mutableStateOf<List<YugiohCard>>(listOf())
-    var currentCardShown = mutableStateOf(2)
+    var currentCardShown = mutableStateOf(0)
+    var featuredUrl = mutableStateOf("")
     var isLoading = mutableStateOf(false)
     var loadError = mutableStateOf(null)
 
     init {
-        getYugiohList(20, 0)
+        getYugiohList(5, 0)
     }
 
     suspend fun getYugiohCardByName(): Resource<YugiohList> {
@@ -66,23 +64,26 @@ class HomeScreenViewModel @Inject constructor(
                     loadError.value = null
                 }
             }
+            featuredUrl.value = featuredList.value[0].cardImages!![0].imageUrl
         }
     }
 
     fun getCurrentShownCard(command: String) {
         if (command == "right") {
-            if (currentCardShown.value < 3) {
-                currentCardShown.value += 1
+            if (currentCardShown.value == featuredList.value.size - 1) {
+                currentCardShown.value = 0
             } else {
-                currentCardShown.value = 1
+                currentCardShown.value += 1
             }
         } else {
-            if (currentCardShown.value > 1) {
-                currentCardShown.value -= 1
+            if (currentCardShown.value == 0) {
+                currentCardShown.value = featuredList.value.size - 1
             } else {
-                currentCardShown.value = 3
+                currentCardShown.value -= 1
             }
         }
+
+        featuredUrl.value = featuredList.value[currentCardShown.value].cardImages!![0].imageUrl
     }
 
 }
