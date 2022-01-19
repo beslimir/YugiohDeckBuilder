@@ -1,4 +1,4 @@
-package com.example.yugiohdeckbuilder.presentation.home_screen
+package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
+import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
 
 @Composable
 fun YugiohCardRow(
