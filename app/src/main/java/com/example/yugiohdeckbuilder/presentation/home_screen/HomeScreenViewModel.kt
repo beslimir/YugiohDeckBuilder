@@ -23,7 +23,7 @@ class HomeScreenViewModel @Inject constructor(
     var loadError = mutableStateOf(null)
 
     init {
-        getYugiohList(5, 0)
+        getYugiohList(30, 0)
     }
 
     suspend fun getYugiohCardByName(): Resource<YugiohList> {
