@@ -105,7 +105,7 @@ fun FeaturedCardSection(
                                 entries = featuredList,
                                 index = it,
                                 context = context,
-                                viewModel
+                                viewModel = viewModel
                             )
                         }
                     }
