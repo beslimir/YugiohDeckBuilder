@@ -1,6 +1,5 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,7 +17,6 @@ import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewMode
 
 @Composable
 fun CardList(
-    context: Context,
     viewModel: HomeScreenViewModel,
 ) {
     val featuredList by remember { viewModel.featuredList }
@@ -37,7 +35,6 @@ fun CardList(
                 YugiohCardRow(
                     entries = featuredList,
                     index = it,
-                    context = context,
                     viewModel = viewModel
                 )
             }

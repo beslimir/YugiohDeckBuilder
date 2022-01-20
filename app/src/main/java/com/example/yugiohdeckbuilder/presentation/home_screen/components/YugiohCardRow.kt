@@ -1,29 +1,26 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
-import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
-import com.example.yugiohdeckbuilder.presentation.loadPictureWithGlide
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun YugiohCardRow(
     entries: List<YugiohCard>,
     index: Int,
-    context: Context,
     viewModel: HomeScreenViewModel,
 ) {
     Card(
@@ -42,15 +39,16 @@ fun YugiohCardRow(
             Column(
                 modifier = Modifier
                     .height(70.dp)
-                    .width(50.dp)
+                    .width(50.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val featuredImage = loadPictureWithGlide(url = entries[index].cardImages!![0].imageUrlSmall, viewModel = viewModel).value
-                featuredImage?.let { img ->
-                    Image(
-                        bitmap = img.asImageBitmap(),
-                        contentDescription = null
-                    )
-                }
+                GlideImage(
+                    imageModel = entries[index].cardImages!![0].imageUrlSmall,
+                    loading = {
+                        CircularProgressIndicator()
+                    }
+                )
             }
 
             Column(

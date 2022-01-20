@@ -3,7 +3,7 @@ package com.example.yugiohdeckbuilder.presentation
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -15,13 +15,15 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun FeaturedCardSection(
@@ -43,9 +45,6 @@ fun FeaturedCardSection(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.height(300.dp)
                 ) {
-                    val featuredImage =
-                        loadPictureWithGlide(url = featuredUrl, viewModel = viewModel).value
-
                     Column(
                         modifier = modifier
                             .clickable {
@@ -63,25 +62,20 @@ fun FeaturedCardSection(
                     Box(
                         modifier = Modifier
                             .size(200.dp)
-                            .weight(2f)
+                            .weight(2f),
+                        contentAlignment = Alignment.Center
                     ) {
-                        if (viewModel.isFeaturedCardLoading.value) {
-                            CircularProgressIndicator(
-                                color = MaterialTheme.colors.primary,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                        featuredImage?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .clickable {
+                        GlideImage(
+                            imageModel = featuredUrl,
+                            modifier = Modifier
+                                .clickable {
 
-                                    }
-                            )
-                        }
+                                },
+                            loading = {
+                                CircularProgressIndicator()
+                            },
+                            contentScale = ContentScale.Fit
+                        )
                     }
 
                     Column(
@@ -102,28 +96,4 @@ fun FeaturedCardSection(
         }
     }
 
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Composable
-fun loadPictureWithGlide(
-    url: String,
-    viewModel: HomeScreenViewModel,
-): MutableState<Bitmap?> {
-
-    val bitmapState: MutableState<Bitmap?> = mutableStateOf(null)
-
-    Glide.with(LocalContext.current)
-        .asBitmap()
-        .load(url)
-        .into(object : CustomTarget<Bitmap>() {
-            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                bitmapState.value = resource
-                viewModel.isFeaturedCardLoading.value = false
-            }
-
-            override fun onLoadCleared(placeholder: Drawable?) {}
-        })
-
-    return bitmapState
 }

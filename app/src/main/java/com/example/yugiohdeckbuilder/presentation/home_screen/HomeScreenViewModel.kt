@@ -19,10 +19,7 @@ class HomeScreenViewModel @Inject constructor(
     var featuredList = mutableStateOf<List<YugiohCard>>(listOf())
     var currentCardShown = mutableStateOf(0)
     var featuredUrl = mutableStateOf("")
-    var isLoading = mutableStateOf(false)
     var loadError = mutableStateOf(null)
-
-    var isFeaturedCardLoading = mutableStateOf(true)
 
     init {
         getYugiohList(30, 0)
@@ -34,7 +31,6 @@ class HomeScreenViewModel @Inject constructor(
 
     fun getYugiohList(num: Int, offset: Int) {
         viewModelScope.launch {
-            isLoading.value = true
             val result = repository.getYugiohList(num, offset)
 
             when (result) {
@@ -57,7 +53,6 @@ class HomeScreenViewModel @Inject constructor(
                         )
                     }
 
-                    isLoading.value = false
                     loadError.value = null
                     featuredList.value += yugiohCards
                 }
@@ -73,8 +68,6 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun getCurrentShownCard(command: String) {
-        isFeaturedCardLoading.value = true
-
         if (command == "right") {
             if (currentCardShown.value == featuredList.value.size - 1) {
                 currentCardShown.value = 0
