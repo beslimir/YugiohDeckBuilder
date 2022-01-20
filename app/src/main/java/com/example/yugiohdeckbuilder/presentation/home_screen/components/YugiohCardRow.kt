@@ -8,6 +8,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
+import com.example.yugiohdeckbuilder.presentation.loadPictureWithGlide
 
 @Composable
 fun YugiohCardRow(
@@ -37,15 +39,16 @@ fun YugiohCardRow(
         Row(
             modifier = Modifier.padding(4.dp)
         ) {
-            val painter = rememberImagePainter(
-                data = entries[index].cardImages!![0].imageUrlSmall
-            )
-            Image(
-                painter = painter,
-                contentDescription = entries[index].name,
-                modifier = Modifier
-                    .height(70.dp)
-            )
+            val featuredImage =
+                loadPictureWithGlide(url = entries[index].cardImages!![0].imageUrlSmall, viewModel = viewModel).value
+            featuredImage?.let { img ->
+                Image(
+                    bitmap = img.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(70.dp)
+                )
+            }
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(start = 8.dp)
