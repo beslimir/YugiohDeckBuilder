@@ -39,16 +39,20 @@ fun YugiohCardRow(
         Row(
             modifier = Modifier.padding(4.dp)
         ) {
-            val featuredImage =
-                loadPictureWithGlide(url = entries[index].cardImages!![0].imageUrlSmall, viewModel = viewModel).value
-            featuredImage?.let { img ->
-                Image(
-                    bitmap = img.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(70.dp)
-                )
+            Column(
+                modifier = Modifier
+                    .height(70.dp)
+                    .width(50.dp)
+            ) {
+                val featuredImage = loadPictureWithGlide(url = entries[index].cardImages!![0].imageUrlSmall, viewModel = viewModel).value
+                featuredImage?.let { img ->
+                    Image(
+                        bitmap = img.asImageBitmap(),
+                        contentDescription = null
+                    )
+                }
             }
+
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(start = 8.dp)
