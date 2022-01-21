@@ -63,6 +63,7 @@ fun HomeScreen(
                         IconButton(
                             onClick = {
                                 viewModel.isSearchbarVisible.value = true
+                                viewModel.searchValue.value = "Search..."
                             }
                         ) {
                             Icon(
