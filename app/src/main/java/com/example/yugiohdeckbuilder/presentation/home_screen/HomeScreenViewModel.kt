@@ -20,6 +20,9 @@ class HomeScreenViewModel @Inject constructor(
     var currentCardShown = mutableStateOf(0)
     var featuredUrl = mutableStateOf("")
     var loadError = mutableStateOf(null)
+    var isSearchbarVisible = mutableStateOf(false)
+    var searchValue = mutableStateOf("Search...")
+    var searchBarHintDeleted = mutableStateOf(false)
 
     init {
         getYugiohList(30, 0)
