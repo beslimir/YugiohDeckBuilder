@@ -33,9 +33,7 @@ class HomeScreenViewModel @Inject constructor(
 
     fun getYugiohCardsByName(name: String) {
         if (name.isNotEmpty()) {
-            var job: Job? = null
-            job?.cancel()
-            job = viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch(Dispatchers.Default) {
                 delay(500L)
                 val searchedCards = repository.getYugiohCardsByName(name)
                 when (searchedCards) {

@@ -8,9 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +17,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.yugiohdeckbuilder.presentation.FeaturedCardSection
 import com.example.yugiohdeckbuilder.presentation.home_screen.components.CardList
 import com.example.yugiohdeckbuilder.presentation.home_screen.components.SearchBar
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -26,6 +28,7 @@ fun HomeScreen(
 ) {
 
     val isSearchbarVisible by remember { viewModel.isSearchbarVisible }
+    var job: Job? = null
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -49,7 +52,11 @@ fun HomeScreen(
                         exit = fadeOut() + slideOutHorizontally()
                     ) {
                         SearchBar(viewModel) {
-                            viewModel.getYugiohCardsByName(it)
+                            job?.cancel()
+                            job = MainScope().launch {
+                                delay(750L)
+                                viewModel.getYugiohCardsByName(it)
+                            }
                         }
                     }
                     Row(
