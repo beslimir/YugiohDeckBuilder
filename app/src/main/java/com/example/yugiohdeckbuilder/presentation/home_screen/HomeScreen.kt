@@ -110,7 +110,8 @@ fun HomeScreen(
             //Featured Yugioh cards section
             FeaturedCardSection(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .height(300.dp)
                     .weight(1f)
                     .size(40.dp),
                 viewModel

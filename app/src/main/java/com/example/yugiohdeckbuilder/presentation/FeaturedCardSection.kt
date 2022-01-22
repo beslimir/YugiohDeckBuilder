@@ -1,27 +1,19 @@
 package com.example.yugiohdeckbuilder.presentation
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewModel
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -34,16 +26,13 @@ fun FeaturedCardSection(
     val featuredUrl by remember { viewModel.featuredUrl }
 
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
+        contentAlignment = Alignment.Center
     ) {
         if (featuredList.isNotEmpty()) {
             Column {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.height(300.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(
                         modifier = modifier

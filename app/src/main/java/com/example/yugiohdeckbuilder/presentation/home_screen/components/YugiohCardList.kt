@@ -1,10 +1,7 @@
 package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,11 +22,11 @@ fun CardList(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         LazyColumn(
             contentPadding = PaddingValues(8.dp),
-            modifier = Modifier.background(Color.LightGray)
+            modifier = Modifier.background(Color.LightGray).fillMaxSize()
         ) {
             items(featuredList.size) {
                 YugiohCardRow(
