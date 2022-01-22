@@ -8,6 +8,9 @@ import com.example.yugiohdeckbuilder.data.remote.dto.YugiohList
 import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,16 +31,57 @@ class HomeScreenViewModel @Inject constructor(
         getYugiohList(30, 0)
     }
 
-    suspend fun getYugiohCardByName(): Resource<YugiohList> {
-        return repository.getYugiohCardByName("Jinzo")
+    fun getYugiohCardsByName(name: String) {
+        if (name.isNotEmpty()) {
+            var job: Job? = null
+            job?.cancel()
+            job = viewModelScope.launch(Dispatchers.Default) {
+                delay(750L)
+                val searchedCards = repository.getYugiohCardsByName(name)
+                when (searchedCards) {
+                    is Resource.Success -> {
+                        featuredList.value = listOf()
+                        val yugiohCards = searchedCards.apiData?.data!!.map {
+                            YugiohCard(
+                                archetype = it.archetype,
+                                atk = it.atk,
+                                attribute = it.attribute,
+                                cardImages = it.cardImages,
+                                cardPrices = it.cardPrices,
+                                cardSets = it.cardSets,
+                                def = it.def,
+                                desc = it.desc,
+                                id = it.id,
+                                level = it.level,
+                                name = it.name,
+                                race = it.race,
+                                type = it.type
+                            )
+                        }
+                        featuredList.value += yugiohCards
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                }
+                if (featuredList.value.isNotEmpty()) {
+                    featuredUrl.value = featuredList.value[0].cardImages!![0].imageUrl
+                }
+            }
+        } else {
+            getYugiohList(30, 0)
+        }
     }
 
     fun getYugiohList(num: Int, offset: Int) {
         viewModelScope.launch {
             val result = repository.getYugiohList(num, offset)
-
             when (result) {
                 is Resource.Success -> {
+                    featuredList.value = listOf()
                     val yugiohCards = result.apiData?.data!!.map {
                         YugiohCard(
                             archetype = it.archetype,
@@ -62,6 +106,45 @@ class HomeScreenViewModel @Inject constructor(
                 is Resource.Error -> {
                     //TODO: Fix this
                     loadError.value = null
+                }
+            }
+            if (featuredList.value.isNotEmpty()) {
+                featuredUrl.value = featuredList.value[0].cardImages!![0].imageUrl
+            }
+        }
+    }
+
+    fun testApi() {
+        viewModelScope.launch(Dispatchers.Default) {
+            delay(500L)
+            val searchedCards = repository.testApi("Water", 5, 0)
+            when (searchedCards) {
+                is Resource.Success -> {
+                    featuredList.value = listOf()
+                    val yugiohCards = searchedCards.apiData?.data!!.map {
+                        YugiohCard(
+                            archetype = it.archetype,
+                            atk = it.atk,
+                            attribute = it.attribute,
+                            cardImages = it.cardImages,
+                            cardPrices = it.cardPrices,
+                            cardSets = it.cardSets,
+                            def = it.def,
+                            desc = it.desc,
+                            id = it.id,
+                            level = it.level,
+                            name = it.name,
+                            race = it.race,
+                            type = it.type
+                        )
+                    }
+                    featuredList.value += yugiohCards
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
                 }
             }
             if (featuredList.value.isNotEmpty()) {

@@ -14,8 +14,15 @@ interface YugiohAPI {
     ): YugiohList
 
     @GET("cardinfo.php")
-    suspend fun getYugiohCardByName(
-        @Query("name") cardName: String
+    suspend fun getYugiohCardsByName(
+        @Query("fname") cardName: String
+    ): YugiohList
+
+    @GET("cardinfo.php")
+    suspend fun testApi(
+        @Query("attribute") attribute: String,
+        @Query("num") num: Int,
+        @Query("offset") offset: Int
     ): YugiohList
 
 }

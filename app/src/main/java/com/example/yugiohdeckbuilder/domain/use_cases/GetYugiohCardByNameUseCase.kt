@@ -7,7 +7,7 @@ class GetYugiohCardByNameUseCase(
 ) {
 
     suspend operator fun invoke(name: String) {
-        yugiohRepository.getYugiohCardByName(name)
+        yugiohRepository.getYugiohCardsByName(name)
     }
 
 }

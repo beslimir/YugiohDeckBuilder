@@ -25,9 +25,19 @@ class YugiohRepositoryImpl @Inject constructor(
         return Resource.Success(response)
     }
 
-    override suspend fun getYugiohCardByName(name: String): Resource<YugiohList> {
+    override suspend fun getYugiohCardsByName(name: String): Resource<YugiohList> {
         val response = try {
-            api.getYugiohCardByName(name)
+            api.getYugiohCardsByName(name)
+        } catch (throwable: Throwable) {
+            return Resource.Error(errorHandler.getError(throwable))
+        }
+
+        return Resource.Success(response)
+    }
+
+    override suspend fun testApi(attribute: String, num: Int, offset: Int): Resource<YugiohList> {
+        val response = try {
+            api.testApi(attribute, num, offset)
         } catch (throwable: Throwable) {
             return Resource.Error(errorHandler.getError(throwable))
         }

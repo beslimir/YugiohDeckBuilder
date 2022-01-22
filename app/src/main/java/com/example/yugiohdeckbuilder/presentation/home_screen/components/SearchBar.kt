@@ -25,6 +25,7 @@ import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreenViewMode
 @Composable
 fun SearchBar(
     viewModel: HomeScreenViewModel,
+    onSearch: (String) -> Unit = {}
 ) {
     var value by remember { viewModel.searchValue }
     val isHintDeleted by remember { viewModel.searchBarHintDeleted }
@@ -41,7 +42,10 @@ fun SearchBar(
     ) {
         BasicTextField(
             value = value,
-            onValueChange = { value = it },
+            onValueChange = {
+                value = it
+                onSearch(it)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)

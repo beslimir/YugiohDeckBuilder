@@ -48,7 +48,9 @@ fun HomeScreen(
                         enter = fadeIn() + slideInHorizontally(),
                         exit = fadeOut() + slideOutHorizontally()
                     ) {
-                        SearchBar(viewModel)
+                        SearchBar(viewModel) {
+                            viewModel.getYugiohCardsByName(it)
+                        }
                     }
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
