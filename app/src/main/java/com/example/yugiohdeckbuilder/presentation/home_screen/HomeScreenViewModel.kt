@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
-import com.example.yugiohdeckbuilder.data.remote.dto.YugiohList
 import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +25,7 @@ class HomeScreenViewModel @Inject constructor(
     var isSearchbarVisible = mutableStateOf(false)
     var searchValue = mutableStateOf("Search...")
     var searchBarHintDeleted = mutableStateOf(false)
+    var indexList = mutableStateOf<List<Int>>(listOf())
 
     init {
         getYugiohList(30, 0)
@@ -36,11 +36,12 @@ class HomeScreenViewModel @Inject constructor(
             var job: Job? = null
             job?.cancel()
             job = viewModelScope.launch(Dispatchers.Default) {
-                delay(750L)
+                delay(500L)
                 val searchedCards = repository.getYugiohCardsByName(name)
                 when (searchedCards) {
                     is Resource.Success -> {
-                        featuredList.value = listOf()
+                        indexList.value = listOf() //reset index list for border color
+                        featuredList.value = listOf() //reset featuredList (the one we see on starting app)
                         val yugiohCards = searchedCards.apiData?.data!!.map {
                             YugiohCard(
                                 archetype = it.archetype,
@@ -81,7 +82,8 @@ class HomeScreenViewModel @Inject constructor(
             val result = repository.getYugiohList(num, offset)
             when (result) {
                 is Resource.Success -> {
-                    featuredList.value = listOf()
+                    indexList.value = listOf() //reset index list for border color
+                    featuredList.value = listOf() //reset featuredList (the one we see on starting app)
                     val yugiohCards = result.apiData?.data!!.map {
                         YugiohCard(
                             archetype = it.archetype,
