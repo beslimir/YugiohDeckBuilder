@@ -111,10 +111,9 @@ fun HomeScreen(
             FeaturedCardSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
-                    .weight(1f)
-                    .size(40.dp),
-                viewModel
+                    .height(260.dp)
+                    .weight(1f),
+                viewModel = viewModel
             )
 
             //List of cards
