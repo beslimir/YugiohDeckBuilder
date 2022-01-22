@@ -40,6 +40,7 @@ class HomeScreenViewModel @Inject constructor(
                     is Resource.Success -> {
                         indexList.value = listOf() //reset index list for border color
                         featuredList.value = listOf() //reset featuredList (the one we see on starting app)
+                        currentCardShown.value = 0 //reset the featured shown card to first card (0)
                         val yugiohCards = searchedCards.apiData?.data!!.map {
                             YugiohCard(
                                 archetype = it.archetype,
