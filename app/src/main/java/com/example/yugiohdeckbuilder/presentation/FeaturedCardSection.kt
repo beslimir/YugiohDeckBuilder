@@ -31,6 +31,7 @@ fun FeaturedCardSection(
 ) {
     val featuredList by remember { viewModel.featuredList }
     val featuredUrl by remember { viewModel.featuredUrl }
+    val loadError by remember { viewModel.loadError }
 
     Box(
         contentAlignment = Alignment.Center
@@ -153,6 +154,14 @@ fun FeaturedCardSection(
                         }
                     }
                 }
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = loadError)
             }
         }
     }
