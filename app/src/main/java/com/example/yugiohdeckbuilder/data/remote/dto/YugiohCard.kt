@@ -1,8 +1,11 @@
 package com.example.yugiohdeckbuilder.data.remote.dto
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class YugiohCard(
     val archetype: String?,
     val atk: Int?,
@@ -15,6 +18,7 @@ data class YugiohCard(
     val cardSets: List<CardSet>?,
     val def: Int?,
     val desc: String,
+    @PrimaryKey
     val id: Int,
     val level: Int?,
     val name: String,

@@ -1,6 +1,9 @@
 package com.example.yugiohdeckbuilder.di
 
+import android.app.Application
+import androidx.room.Room
 import com.example.yugiohdeckbuilder.data.error_handler.ErrorHandlerImpl
+import com.example.yugiohdeckbuilder.data.local.YugiohDatabase
 import com.example.yugiohdeckbuilder.data.remote.YugiohAPI
 import com.example.yugiohdeckbuilder.data.repository.YugiohRepositoryImpl
 import com.example.yugiohdeckbuilder.domain.error_handler.ErrorHandler
@@ -50,5 +53,13 @@ object AppModule {
     fun provideYugiohRepository(api: YugiohAPI, errorHandler: ErrorHandler): YugiohRepository {
         return YugiohRepositoryImpl(api, errorHandler)
     }
+
+    @Provides
+    @Singleton
+    fun provideYugiohDatabase(app: Application): YugiohDatabase = Room.databaseBuilder(
+        app,
+        YugiohDatabase::class.java,
+        "yugioh_database"
+    ).build()
 
 }
