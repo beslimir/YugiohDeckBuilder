@@ -50,16 +50,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideYugiohRepository(api: YugiohAPI, errorHandler: ErrorHandler): YugiohRepository {
-        return YugiohRepositoryImpl(api, errorHandler)
-    }
-
-    @Provides
-    @Singleton
     fun provideYugiohDatabase(app: Application): YugiohDatabase = Room.databaseBuilder(
         app,
         YugiohDatabase::class.java,
         "yugioh_database"
     ).build()
+
+    @Provides
+    @Singleton
+    fun provideYugiohRepository(api: YugiohAPI, errorHandler: ErrorHandler, db: YugiohDatabase): YugiohRepository {
+        return YugiohRepositoryImpl(api, errorHandler, db.yugiohDao)
+    }
 
 }

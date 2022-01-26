@@ -5,7 +5,7 @@ import com.example.yugiohdeckbuilder.data.remote.dto.YugiohCard
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface YugiohCardDao {
+interface YugiohDao {
 
     @Query("SELECT * FROM YugiohCard")
     fun getDeckList(): Flow<List<YugiohCard>>

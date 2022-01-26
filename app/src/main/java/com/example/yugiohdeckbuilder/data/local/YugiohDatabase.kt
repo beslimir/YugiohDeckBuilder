@@ -13,6 +13,6 @@ import com.example.yugiohdeckbuilder.util.TypeConverter
 @TypeConverters(TypeConverter::class)
 abstract class YugiohDatabase: RoomDatabase() {
 
-    abstract val yugiohCardDao: YugiohCardDao
+    abstract val yugiohDao: YugiohDao
 
 }
