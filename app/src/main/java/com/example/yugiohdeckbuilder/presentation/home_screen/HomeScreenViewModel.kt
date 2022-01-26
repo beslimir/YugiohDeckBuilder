@@ -9,9 +9,20 @@ import com.example.yugiohdeckbuilder.domain.repository.YugiohRepository
 import com.example.yugiohdeckbuilder.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+/**
+ * indexList - Responsible to hold entries that were clicked and show the border (will be changed)
+ * addedCardsList - Holds the items currently clicked on (can maybe be changed to only save the
+ * card to the deck, and then call the fun getDeckList() to fill the list)
+ * deckList - holds the list of cards saved in our deck
+ *
+ * */
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -32,10 +43,13 @@ class HomeScreenViewModel @Inject constructor(
     /* Room variables */
 
     var addedCardsList = mutableStateOf<List<Int>>(listOf())
+    private var getDeckJob: Job? = null
+    var deckList = mutableStateOf<List<Int>>(listOf())
 
 
     init {
         getYugiohList(30, 0)
+        getDeckList()
     }
 
     /* API functions */
@@ -211,6 +225,15 @@ class HomeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             repository.insertCard(yugiohCard)
         }
+    }
+
+    fun getDeckList() {
+        getDeckJob?.cancel()
+        getDeckJob = repository.getDeckList().map { cards ->
+            for (element in cards) {
+                deckList.value += listOf(element.id)
+            }
+        }.launchIn(viewModelScope)
     }
 
 

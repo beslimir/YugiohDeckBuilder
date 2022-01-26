@@ -43,7 +43,7 @@ fun YugiohCardRow(
     }
     val context = LocalContext.current
 
-    var usedDrawableResource = if (viewModel.addedCardsList.value.contains(index)) {
+    val usedDrawableResource = if (viewModel.addedCardsList.value.contains(index) || viewModel.deckList.value.contains(entries[index].id)) {
         R.drawable.ic_check_circle_true
     } else {
         R.drawable.ic_check_circle_false
