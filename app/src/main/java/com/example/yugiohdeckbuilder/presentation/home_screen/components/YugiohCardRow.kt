@@ -2,14 +2,13 @@ package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -42,7 +41,13 @@ fun YugiohCardRow(
     } else {
         Color.White
     }
-    var context = LocalContext.current
+    val context = LocalContext.current
+
+    var usedDrawableResource = if (viewModel.addedCardsList.value.contains(index)) {
+        R.drawable.ic_check_circle_true
+    } else {
+        R.drawable.ic_check_circle_false
+    }
 
 
     Card(
@@ -147,18 +152,22 @@ fun YugiohCardRow(
                 }
             }
 
-                IconButton(
-                    onClick = {
-                        viewModel.insertCardIntoDeck(entries[index])
-                        Toast.makeText(context, "Inserted: ${entries[index].name}", Toast.LENGTH_SHORT).show()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = null
-                    )
+            IconButton(
+                onClick = {
+                    viewModel.insertCardIntoDeck(entries[index])
+                    viewModel.addedCardsList.value += index
+                    Toast.makeText(context, "${entries[index].name} added to deck", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            
+            ) {
+                Image(
+                    painterResource(
+                        id = usedDrawableResource
+                    ),
+                    contentDescription = ""
+                )
+            }
+
         }
     }
 }

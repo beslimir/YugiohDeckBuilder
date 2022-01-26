@@ -23,5 +23,6 @@ data class YugiohCard(
     val level: Int?,
     val name: String,
     val race: String,
-    val type: String
+    val type: String,
+    var isSaved: Boolean = false
 )

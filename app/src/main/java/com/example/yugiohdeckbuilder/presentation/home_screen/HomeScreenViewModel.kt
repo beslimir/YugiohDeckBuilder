@@ -31,6 +31,7 @@ class HomeScreenViewModel @Inject constructor(
 
     /* Room variables */
 
+    var addedCardsList = mutableStateOf<List<Int>>(listOf())
 
 
     init {
@@ -47,6 +48,7 @@ class HomeScreenViewModel @Inject constructor(
                 when (searchedCards) {
                     is Resource.Success -> {
                         indexList.value = listOf() //reset index list for border color
+                        addedCardsList.value = listOf() //reset index list for used circle
                         featuredList.value =
                             listOf() //reset featuredList (the one we see on starting app)
                         currentCardShown.value = 0 //reset the featured shown card to first card (0)
@@ -102,6 +104,7 @@ class HomeScreenViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     indexList.value = listOf() //reset index list for border color
+                    addedCardsList.value = listOf() //reset index list for used circle
                     featuredList.value =
                         listOf() //reset featuredList (the one we see on starting app)
                     val yugiohCards = result.apiData?.data!!.map {
