@@ -18,6 +18,8 @@ class HomeScreenViewModel @Inject constructor(
     private val repository: YugiohRepository
 ) : ViewModel() {
 
+    /* API variables */
+
     var featuredList = mutableStateOf<List<YugiohCard>>(listOf())
     var currentCardShown = mutableStateOf(0)
     var featuredUrl = mutableStateOf("")
@@ -27,9 +29,15 @@ class HomeScreenViewModel @Inject constructor(
     var searchBarHintDeleted = mutableStateOf(false)
     var indexList = mutableStateOf<List<Int>>(listOf())
 
+    /* Room variables */
+
+
+
     init {
         getYugiohList(30, 0)
     }
+
+    /* API functions */
 
     fun getYugiohCardsByName(name: String) {
         if (name.isNotEmpty()) {
@@ -193,5 +201,14 @@ class HomeScreenViewModel @Inject constructor(
 
         featuredUrl.value = featuredList.value[currentCardShown.value].cardImages!![0].imageUrl
     }
+
+    /* Room functions */
+
+    fun insertCardIntoDeck(yugiohCard: YugiohCard) {
+        viewModelScope.launch {
+            repository.insertCard(yugiohCard)
+        }
+    }
+
 
 }
