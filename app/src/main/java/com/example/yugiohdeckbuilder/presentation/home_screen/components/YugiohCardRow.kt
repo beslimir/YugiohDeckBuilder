@@ -35,15 +35,15 @@ fun YugiohCardRow(
     viewModel: HomeScreenViewModel,
 ) {
 
-    val indexList by remember { viewModel.indexList }
-    var getColor = if (indexList.contains(index)) {
+    val borderRow by remember { viewModel.getRowBorder }
+    var getColor = if (borderRow == index) {
         Color.Red
     } else {
         Color.White
     }
     val context = LocalContext.current
 
-    val usedDrawableResource = if (viewModel.addedCardsList.value.contains(index) || viewModel.deckList.value.contains(entries[index].id)) {
+    val usedDrawableResource = if (viewModel.deckList.value.contains(entries[index].id)) {
         R.drawable.ic_check_circle_true
     } else {
         R.drawable.ic_check_circle_false
@@ -60,8 +60,8 @@ fun YugiohCardRow(
                 viewModel.featuredUrl.value = entries[index].cardImages!![0].imageUrl
                 viewModel.currentCardShown.value = index
 
-                viewModel.indexList.value += index
-                getColor = if (indexList.contains(index)) {
+                viewModel.getRowBorder.value = index
+                getColor = if (borderRow == index) {
                     Color.Red
                 } else {
                     Color.White
@@ -155,7 +155,6 @@ fun YugiohCardRow(
             IconButton(
                 onClick = {
                     viewModel.insertCardIntoDeck(entries[index])
-                    viewModel.addedCardsList.value += index
                     Toast.makeText(context, "${entries[index].name} added to deck", Toast.LENGTH_SHORT)
                         .show()
                 }

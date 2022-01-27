@@ -17,9 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * indexList - Responsible to hold entries that were clicked and show the border (will be changed)
- * addedCardsList - Holds the items currently clicked on (can maybe be changed to only save the
- * card to the deck, and then call the fun getDeckList() to fill the list)
+ * getRowBorder - holds the currently clicked row index
  * deckList - holds the list of cards saved in our deck
  *
  * */
@@ -38,11 +36,10 @@ class HomeScreenViewModel @Inject constructor(
     var isSearchbarVisible = mutableStateOf(false)
     var searchValue = mutableStateOf("Search...")
     var searchBarHintDeleted = mutableStateOf(false)
-    var indexList = mutableStateOf<List<Int>>(listOf())
+    var getRowBorder = mutableStateOf(-1)
 
     /* Room variables */
 
-    var addedCardsList = mutableStateOf<List<Int>>(listOf())
     private var getDeckJob: Job? = null
     var deckList = mutableStateOf<List<Int>>(listOf())
 
@@ -61,8 +58,7 @@ class HomeScreenViewModel @Inject constructor(
                 val searchedCards = repository.getYugiohCardsByName(name)
                 when (searchedCards) {
                     is Resource.Success -> {
-                        indexList.value = listOf() //reset index list for border color
-                        addedCardsList.value = listOf() //reset index list for used circle
+                        getRowBorder.value = -1 //reset rowBorder value
                         featuredList.value =
                             listOf() //reset featuredList (the one we see on starting app)
                         currentCardShown.value = 0 //reset the featured shown card to first card (0)
@@ -117,8 +113,7 @@ class HomeScreenViewModel @Inject constructor(
             val result = repository.getYugiohList(num, offset)
             when (result) {
                 is Resource.Success -> {
-                    indexList.value = listOf() //reset index list for border color
-                    addedCardsList.value = listOf() //reset index list for used circle
+                    getRowBorder.value = -1 //reset rowBorder value
                     featuredList.value =
                         listOf() //reset featuredList (the one we see on starting app)
                     val yugiohCards = result.apiData?.data!!.map {
@@ -229,6 +224,7 @@ class HomeScreenViewModel @Inject constructor(
 
     fun getDeckList() {
         getDeckJob?.cancel()
+        deckList.value = listOf()
         getDeckJob = repository.getDeckList().map { cards ->
             for (element in cards) {
                 deckList.value += listOf(element.id)

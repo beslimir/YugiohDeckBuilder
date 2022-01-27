@@ -58,7 +58,8 @@ fun SearchBar(
                 },
             decorationBox = { innerTextField ->
                 innerTextField()
-            }
+            },
+            singleLine = true
         )
         IconButton(
             onClick = {
