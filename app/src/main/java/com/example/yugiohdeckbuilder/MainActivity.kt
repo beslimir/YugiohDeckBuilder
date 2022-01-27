@@ -5,8 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import com.example.yugiohdeckbuilder.presentation.home_screen.HomeScreen
+import com.example.yugiohdeckbuilder.presentation.NavGraphs
 import com.example.yugiohdeckbuilder.presentation.ui.theme.YugiohDeckBuilderTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
             YugiohDeckBuilderTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    HomeScreen()
+                    DestinationsNavHost(navGraph = NavGraphs.root)
                 }
             }
         }

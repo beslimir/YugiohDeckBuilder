@@ -1,4 +1,4 @@
-package com.example.yugiohdeckbuilder.presentation
+package com.example.yugiohdeckbuilder.presentation.home_screen.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

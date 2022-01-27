@@ -5,26 +5,32 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.yugiohdeckbuilder.presentation.FeaturedCardSection
+import com.example.yugiohdeckbuilder.R
+import com.example.yugiohdeckbuilder.presentation.destinations.MyDeckScreenDestination
+import com.example.yugiohdeckbuilder.presentation.home_screen.components.FeaturedCardSection
 import com.example.yugiohdeckbuilder.presentation.home_screen.components.CardList
 import com.example.yugiohdeckbuilder.presentation.home_screen.components.SearchBar
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Destination(start = true)
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
 ) {
 
     val isSearchbarVisible by remember { viewModel.isSearchbarVisible }
@@ -86,12 +92,14 @@ fun HomeScreen(
                 Row {
                     IconButton(
                         onClick = {
-
+                            navigator.navigate(
+                                MyDeckScreenDestination()
+                            )
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = null
+                            painterResource(id = R.drawable.ic_deck),
+                            contentDescription = "My deck"
                         )
                     }
                     IconButton(
