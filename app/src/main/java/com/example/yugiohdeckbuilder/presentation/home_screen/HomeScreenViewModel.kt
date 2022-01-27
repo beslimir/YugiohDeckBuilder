@@ -42,8 +42,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private var getDeckJob: Job? = null
     var deckList = mutableStateOf<List<Int>>(listOf())
-
-
+    
     init {
         getYugiohList(30, 0)
         getDeckList()
@@ -224,8 +223,8 @@ class HomeScreenViewModel @Inject constructor(
 
     fun getDeckList() {
         getDeckJob?.cancel()
-        deckList.value = listOf()
         getDeckJob = repository.getDeckList().map { cards ->
+            deckList.value = listOf()
             for (element in cards) {
                 deckList.value += listOf(element.id)
             }
