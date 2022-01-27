@@ -10,6 +10,7 @@ Also, refactoring code when mvp once is done by implementing use cases, events a
 - Glide
 - Landscapist (Loading images made simple)
 - Room database
+- ComposeDestinations library
 - ...
 
 Next steps:
